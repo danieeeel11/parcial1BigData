@@ -52,9 +52,11 @@ def descargacsv():
         csv_writer.writerows(news_data)
 
         # Subir el archivo CSV a S3
-        s3.put_object(Body=csv_buffer.getvalue(),
-                      Bucket=bucket_name,
-                      Key=csv_key)
+        s3.put_object(
+            Body=csv_buffer.getvalue(),
+            Bucket=bucket_name,
+            Key=csv_key
+        )
 
     print("Datos guardados en CSV en S3:", csv_key)
 
