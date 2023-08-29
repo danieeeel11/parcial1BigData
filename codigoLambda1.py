@@ -2,7 +2,7 @@ import boto3
 import urllib.request
 from datetime import datetime
 
-def lambda_handler(event, context):
+def descargahtml():
 
     # Definir URLs de los periódicos
     urls = {
@@ -30,7 +30,4 @@ def lambda_handler(event, context):
 	    
 	print(f"Contenido de {newspaper} guardado en S3: {s3_path}")
 	    
-	return {
-	   'statusCode': 200,
-	   'body': 'Página del tiempo descargada y subida exitosamente a S3.'	
-	}
+    return True
