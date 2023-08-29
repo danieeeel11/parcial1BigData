@@ -37,33 +37,5 @@ def descargacsv():
                                           nombre[:4]+'-month=' +
                                           nombre[5:7]+'-day=' +
                                           nombre[8:]+'-eltiempo.csv'))
-
-    obj_espectador = bucket.Object(str("news/raw/" +
-                                   "elespectador-" + nombre +
-                                   ".html"))
-    body_espectador = obj_espectador.get()['Body'].read()
-
-    html_espectador = BeautifulSoup(body_espectador, 'html.parser')
-    data_noticias_espectador = html_tiempo.find_all('article')
-    csv_espectador = ""
-    
-    for i in range(len(data_noticias_espectador)):
-        link = "elespectador.com" + \
-               data_noticias_espectador[i].find('a',
-                                            class_='title page-link')['href']
-        name = data_noticias_espectador[i]['data-name'].replace(",", "")
-        category = data_noticias_espectador[i]['data-seccion']
-        csv_espectador += name + ";" + \
-            category + ";" + \
-            link + \
-            "\n"
-
-    boto3.client('s3').put_object(Body=csv_espectador,
-                                  Bucket='bucketparcial1',
-                                  Key=str('bucket/headlines/final' +
-                                          '/periodico=elespectador/year=' +
-                                          nombre[:4]+'-month=' +
-                                          nombre[5:7]+'-day=' +
-                                          nombre[8:]+'-elespectador.csv'))
     
     return True
