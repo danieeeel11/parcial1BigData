@@ -18,7 +18,7 @@ def descargacsv():
     data_noticias_tiempo = html_tiempo.find_all('article')
 
     # Obtener el contenido HTML de Publimetro
-    obj_elespectador = bucket.Object("headlines/raw/elespectador-" 
+    obj_elespectador = bucket.Object("headlines/raw/elespectador-"
                                      + fecha + ".html")
     body_elespectador = obj_elespectador.get()['Body'].read()
     html_elespectador = BeautifulSoup(body_elespectador, 'html.parser')
@@ -27,8 +27,8 @@ def descargacsv():
     # Generar los datos CSV para El Tiempo
     csv_tiempo = "Categoría, Titular, Enlace\n"
     for article in data_noticias_tiempo:
-        link = "https://eltiempo.com" + article.find('a', 
-                                                     class_='title page-link')['href']
+        link = "https://eltiempo.com"
+            + article.find('a', class_='title page-link')['href']
         category = article['data-seccion']
         title = article['data-name'].replace(",", "")
         csv_tiempo += f"{category}, {title}, {link}\n"
@@ -52,11 +52,11 @@ def descargacsv():
     )
 
     s3_client = boto3.client('s3')
-    s3_client.put_object(Body=csv_tiempo.encode('utf-8'), 
-                         Bucket=bucket, 
+    s3_client.put_object(Body=csv_tiempo.encode('utf-8'),
+                         Bucket=bucket,
                          Key=csv_tiempo_key)
-    s3_client.put_object(Body=csv_elespectador.encode('utf-8'), 
-                         Bucket=bucket, 
+    s3_client.put_object(Body=csv_elespectador.encode('utf-8'),
+                         Bucket=bucket,
                          Key=csv_elespectador_key)
 
     print("Archivos CSV generados y subidos a S3.")
