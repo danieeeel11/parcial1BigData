@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 
-def descargascsv():
+def descargacsv():
 
 	# Configuración de Amazon S3
 	s3 = boto3.client('s3')
