@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 from datetime import datetime
 
-def lambda_handler(event, context):
+def descargascsv():
 
 	# Configuración de Amazon S3
 	s3 = boto3.client('s3')
@@ -48,8 +48,5 @@ def lambda_handler(event, context):
 
 	print("Datos guardados en CSV en S3:", csv_key)
 	
-	return {
-	   'statusCode': 200,
-	   'body': 'Contenido correctamente extraido en csv.'	
-	}
+	return True
 
