@@ -1,5 +1,5 @@
 import boto3
-#import urllib.request
+# import urllib.request
 from datetime import datetime
 from bs4 import BeautifulSoup
 import io
@@ -36,7 +36,10 @@ def descargacsv():
 
     # Generar la ruta del archivo CSV
     current_date = datetime.now().strftime('%Y-%m-%d')
-    csv_key = f'bucket/headlines/final/periodico=xxx/year={current_date[:4]}/month={current_date[5:7]}/{current_date}.csv'
+    csv_key = (
+        f'bucket/headlines/final/periodico=xxx/year={current_date[:4]}/'
+        f'month={current_date[5:7]}/{current_date}.csv'
+    )
 
     # Escribir los datos en el archivo CSV
     csv_buffer = io.StringIO()
