@@ -39,13 +39,13 @@ def descargacsv():
                                           nombre[5:7]+'-day=' +
                                           nombre[8:]+'-eltiempo.csv'))
 
-    obj_espectador = bucket.Object(str("news/raw/" +
-                                   "elespectador-" + nombre +
-                                   ".html"))
+    obj_espectador = bucket.Object(str("news/raw/" + 
+                                       "elespectador-" + nombre +
+                                       ".html"))
     body_espectador = obj_espectador.get()['Body'].read()
 
     html_espectador = BeautifulSoup(body_espectador, 'html.parser')
-    data_noticias_espectador = html_tiempo.find_all('article')
+    data_noticias_espectador = html_espectador.find_all('article')
     csv_espectador = "" + linea_0
     
     for i in range(len(data_noticias_espectador)):
