@@ -31,7 +31,8 @@ def descargacsv():
         soup = BeautifulSoup(html_content, 'html.parser')
 
         # Extraer categoría, titular y enlace
-        category = soup.find('meta', {'property': 'article:section'})['content']
+        category = soup.find('meta', 
+                             {'property': 'article:section'})['content']
         title = soup.find('title').get_text()
         link = soup.find('meta', {'property': 'og:url'})['content']
 
@@ -41,7 +42,8 @@ def descargacsv():
         # Generar la ruta del archivo CSV
         current_date = datetime.now().strftime('%Y-%m-%d')
         csv_key = (
-            f'headlines/final/periodico={newspaper_name}/year={current_date[:4]}/'
+            f'headlines/final/periodico={newspaper_name}/'
+            f'year={current_date[:4]}/'
             f'month={current_date[5:7]}/{current_date}.csv'
         )
 
