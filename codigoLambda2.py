@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import io
 import csv
 
+
 def descargacsv():
     # Configuración de Amazon S3
     s3 = boto3.client('s3')
@@ -27,7 +28,8 @@ def descargacsv():
         soup = BeautifulSoup(html_content, 'html.parser')
 
         # Extraer categoría, titular y enlace
-        category = soup.find('meta', {'property': 'article:section'})['content']
+        category = soup.find('meta', 
+                             {'property': 'article:section'})['content']
         title = soup.find('title').get_text()
         link = f"s3://{bucket_name}/{obj['Key']}"
 
@@ -48,7 +50,9 @@ def descargacsv():
     csv_writer.writerows(news_data)
 
     # Subir el archivo CSV a S3
-    s3.put_object(Body=csv_buffer.getvalue(), Bucket=bucket_name, Key=csv_key)
+    s3.put_object(Body=csv_buffer.getvalue(), 
+                  Bucket=bucket_name, 
+                  Key=csv_key)
 
     print("Datos guardados en CSV en S3:", csv_key)
 
