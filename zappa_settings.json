@@ -16,7 +16,7 @@
     },
    
     "dev2": {
-        "app_function": "codigoLambda1.descargacsv",
+        "app_function": "codigoLambda2.descargacsv",
         "keep_warm": false,
         "role_name": "LabRole",
         "manage_roles": false,
@@ -26,7 +26,7 @@
         "runtime": "python3.8",
         "s3_bucket": "bucketparcial1",
         "events": [{
-            "function": "codigoLambda1.descargacsv",
+            "function": "codigoLambda2.descargacsv",
             "event_source": {
                   "arn":  "arn:aws:s3:::bucketparcial1",
                   "events": [
