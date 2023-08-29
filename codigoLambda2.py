@@ -45,14 +45,13 @@ def descargacsv():
     body_espectador = obj_espectador.get()['Body'].read()
 
     html_espectador = BeautifulSoup(body_espectador, 'html.parser')
-    data_noticias_espectador = html_espectador.find_all('article')
+    data_espectador = html_espectador.find_all('article')
     csv_espectador = "" + linea_0
-    for i in range(len(data_noticias_espectador)):
+    for i in range(len(data_espectador)):
         link = "elespectador.com" + \
-               data_noticias_espectador[i].find('a',
-                                                class_='title page-link')['href']
-        name = data_noticias_espectador[i]['data-name'].replace(",", "")
-        category = data_noticias_espectador[i]['data-seccion']
+               data_espectador[i].find('a', class_='title page-link')['href']
+        name = data_espectador[i]['data-name'].replace(",", "")
+        category = data_espectador[i]['data-seccion']
         csv_espectador += name + ";" + \
             category + ";" + \
             link + \
@@ -66,5 +65,5 @@ def descargacsv():
                                           nombre[5:7]+'-day=' +
                                           nombre[8:]+'-elespectador.csv'))
 
-descargacsv()
 
+descargacsv()
