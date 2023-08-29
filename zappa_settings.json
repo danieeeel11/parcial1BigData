@@ -11,7 +11,7 @@
         "s3_bucket": "bucketparcial1",
         "events": [{
            "function": "codigoLambda1.descargahtml",
-           "expression": "cron(24 17 * * ? *)"
+           "expression": "cron(21 18 * * ? *)"
        }]
     },
    
