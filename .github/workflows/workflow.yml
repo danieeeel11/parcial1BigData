@@ -42,3 +42,18 @@ jobs:
           source env/bin/activate
           pip install -r requirements.txt
           pytest test_python.py
+      - name: flake8
+        run: |
+          source env/bin/activate
+          pip install flake8
+          flake8 codigoLambda1.py
+          flake8 codigoLambda2.py
+          flake8 test_python.py
+      - name: zappa
+        run: |
+          source env/bin/activate
+          pip install zappa
+          pytest
+          zappa deploy
+          zappa dev
+          zappa dev
