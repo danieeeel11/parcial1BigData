@@ -4,7 +4,7 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
+  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
@@ -24,39 +24,46 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: actions/setup-python@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          aws-region: us-east-1      
+          python-version: '3.8'
 
-      # Descarga de html
-      - name: Intalacion
+      - name: Run a one-line script
+        run: echo Hello, world!
+      - name: Listar archivos
         run: |
-          pip install boto3
-          pip install beautifulsoup4
+          ls
+          pwd
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+            aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+            aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+            aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+            aws-region: us-east-1
+
+      - name: Instalacion
+        run: |
           pip install pytest
           pip install virtualenv
           virtualenv env
           source env/bin/activate
           pip install -r requirements.txt
-        # pytest test_python.py
+          pytest
+
       - name: flake8
         run: |
           source env/bin/activate
-          pip install flake8
           flake8 codigoLambda1.py
           flake8 codigoLambda2.py
           flake8 test_python.py
-      - name: zappa
+
+      - name: Zappa
         run: |
           source env/bin/activate
-          pip install zappa
+          pytest
           zappa update dev
           zappa update dev2
-        # pytest
         #zappa deploy dev
         #zappa deploy dev2
-        #zappa update dev
-        #zappa update dev2
