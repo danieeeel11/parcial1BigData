@@ -33,6 +33,7 @@ jobs:
           pip install boto3
           pip install beautifulsoup4
           pip install pytest
+          pip install zappa
           pip install virtualenv
           virtualenv env
           source env/bin/activate
@@ -48,9 +49,8 @@ jobs:
       - name: zappa
         run: |
           source env/bin/activate
-          pip install zappa
-          zappa update dev
           zappa update dev2
+        # zappa update dev2
         # pytest
         #zappa deploy dev
         #zappa deploy dev2
