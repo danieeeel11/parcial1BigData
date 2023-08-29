@@ -33,37 +33,37 @@ def descargacsv():
 
     boto3.client('s3').put_object(Body=csv_tiempo,
                                   Bucket='bucketparcial1bd',
-                                  Key=str('bucket/headlines/final' +
+                                  Key=str('headlines/final' +
                                           '/periodico=eltiempo/year=' +
                                           nombre[:4]+'-month=' +
                                           nombre[5:7]+'-day=' +
                                           nombre[8:]+'-eltiempo.csv'))
 
-    obj_espectador = bucket.Object(str("news/raw/" +
-                                       "elespectador-" + nombre +
+    obj_publimetro = bucket.Object(str("news/raw/" +
+                                       "publimetro-" + nombre +
                                        ".html"))
-    body_espectador = obj_espectador.get()['Body'].read()
+    body_publimetro = obj_publimetro.get()['Body'].read()
 
-    html_espectador = BeautifulSoup(body_espectador, 'html.parser')
-    data_espectador = html_espectador.find_all('article')
-    csv_espectador = "" + linea_0
-    for i in range(len(data_espectador)):
-        link = "elespectador.com" + \
-               data_espectador[i].find('a', class_='title page-link')['href']
-        name = data_espectador[i]['data-name'].replace(",", "")
-        category = data_espectador[i]['data-seccion']
-        csv_espectador += name + ";" + \
+    html_publimetro = BeautifulSoup(body_publimetro, 'html.parser')
+    data_publimetro = html_publimetro.find_all('article')
+    csv_publimetro = "" + linea_0
+    for i in range(len(data_publimetro)):
+        link = "publimetro.co" + \
+               data_publimetro[i].find('a', class_='title page-link')['href']
+        name = data_publimetro[i]['data-name'].replace(",", "")
+        category = data_publimetro[i]['data-seccion']
+        csv_publimetro += name + ";" + \
             category + ";" + \
             link + \
             "\n"
 
-    boto3.client('s3').put_object(Body=csv_espectador,
+    boto3.client('s3').put_object(Body=csv_publimetro,
                                   Bucket='bucketparcial1bd',
-                                  Key=str('bucket/headlines/final' +
-                                          '/periodico=elespectador/year=' +
+                                  Key=str('headlines/final' +
+                                          '/periodico=publimetro/year=' +
                                           nombre[:4]+'-month=' +
                                           nombre[5:7]+'-day=' +
-                                          nombre[8:]+'-elespectador.csv'))
+                                          nombre[8:]+'-publimetro.csv'))
 
 
 descargacsv()
