@@ -22,5 +22,6 @@ def descargahtml():
                              Key=s3_path,
                              Body=content)
         print(f"Contenido de {newspaper} guardado en S3: {s3_path}")
-        
+
+
 descargahtml()
