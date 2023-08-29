@@ -1,5 +1,5 @@
 import boto3
-import urllib.request
+#import urllib.request
 from datetime import datetime
 from bs4 import BeautifulSoup
 import io
