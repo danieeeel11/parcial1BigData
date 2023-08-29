@@ -6,60 +6,46 @@ import io
 
 
 def descargacsv():
-    # Configuración de Amazon S3
-    s3 = boto3.client('s3')
-    bucket_name = 'bucketparcial1'
-    prefix = 'bucket/news/raw/'
 
-    # Obtener la lista de objetos en el bucket
-    objects = s3.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+    fecha = str(datetime.today().strftime('%Y-%m-%d'))
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket('bucketparcial1')
 
-    # Procesar cada objeto
-    for obj in objects.get('Contents', []):
+    # Obtener el contenido HTML de El Tiempo
+    obj_tiempo = bucket.Object("headlines/raw/eltiempo-" + fecha + ".html")
+    body_tiempo = obj_tiempo.get()['Body'].read()
+    html_tiempo = BeautifulSoup(body_tiempo, 'html.parser')
+    data_noticias_tiempo = html_tiempo.find_all('article')
 
-        # Lista para almacenar los datos de las noticias
-        news_data = []
+    # Obtener el contenido HTML de Publimetro
+    obj_elespectador = bucket.Object("headlines/raw/elespectador-" + fecha + ".html")
+    body_elespectador = obj_elespectador.get()['Body'].read()
+    html_elespectador = BeautifulSoup(body_elespectador, 'html.parser')
+    data_noticias_elespectador = html_elespectador.find_all('article')
 
-        # Obtener el nombre del periódico del nombre del archivo
-        newspaper_name = obj['Key'].split('-')[0]
+    # Generar los datos CSV para El Tiempo
+    csv_tiempo = "Categoría, Titular, Enlace\n"
+    for article in data_noticias_tiempo:
+        link = "https://eltiempo.com" + article.find('a', class_='title page-link')['href']
+        category = article['data-seccion']
+        title = article['data-name'].replace(",", "")
+        csv_tiempo += f"{category}, {title}, {link}\n"
 
-        # Obtener el contenido del objeto HTML
-        response = s3.get_object(Bucket=bucket_name, Key=obj['Key'])
-        html_content = response['Body'].read()
+    # Generar los datos CSV para Publimetro
+    csv_elespectador = "Categoría, Titular, Enlace\n"
+    for article in data_noticias_elespectador:
+        link = "https://elespectador.com" + article.find('a')['href']
+        category = link.split('/')[3]  # Assuming the category is the 3rd segment of the URL
+        title = article.find('a').text.replace(",", "")
+        csv_elespectador += f"{category}, {title}, {link}\n"
 
-        # Analizar el contenido HTML con Beautifulsoup
-        soup = BeautifulSoup(html_content, 'html.parser')
+    # Generar la ruta del archivo CSV y subirlo a S3
+    csv_tiempo_key = f'bucket/headlines/final/periodico=eltiempo/year={fecha[:4]}/month={fecha[5:7]}/day={fecha[8:]}/eltiempo.csv'
+    csv_elespectador_key = f'bucket/headlines/final/periodico=elespectador/year={fecha[:4]}/month={fecha[5:7]}/day={fecha[8:]}/publimetro.csv'
 
-        # Extraer categoría, titular y enlace
-        category = soup.find('meta',
-                             {'property': 'article:section'})['content']
-        title = soup.find('title').get_text()
-        link = soup.find('meta', {'property': 'og:url'})['content']
+    s3_client = boto3.client('s3')
+    s3_client.put_object(Body=csv_tiempo.encode('utf-8'), Bucket=bucket, Key=csv_tiempo_key)
+    s3_client.put_object(Body=csv_elespectador.encode('utf-8'), Bucket=bucket, Key=csv_elespectador_key)
 
-        # Agregar los datos a la lista
-        news_data.append([category, title, link])
-
-        # Generar la ruta del archivo CSV
-        current_date = datetime.now().strftime('%Y-%m-%d')
-        csv_key = (
-            f'headlines/final/periodico={newspaper_name}/'
-            f'year={current_date[:4]}/'
-            f'month={current_date[5:7]}/{current_date}.csv'
-        )
-
-        # Escribir los datos en el archivo CSV
-        csv_buffer = io.StringIO()
-        csv_writer = csv.writer(csv_buffer)
-        csv_writer.writerow(['Categoría', 'Titular', 'Enlace'])
-        csv_writer.writerows(news_data)
-
-        # Subir el archivo CSV a S3
-        s3.put_object(
-            Body=csv_buffer.getvalue(),
-            Bucket=bucket_name,
-            Key=csv_key
-        )
-
-    print("Datos guardados en CSV en S3:", csv_key)
-
+    print("Archivos CSV generados y subidos a S3.")
     return True
