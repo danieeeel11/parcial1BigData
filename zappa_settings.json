@@ -1,0 +1,39 @@
+{
+    "dev": {
+        "app_function": "codigoLambda1.descargahtml",
+        "keep_warm": false,
+        "role_name": "LabRole",
+        "manage_roles": false,
+        "apigateway_enabled": false,
+        "aws_region": "us-east-1",
+        "project_name": "parcial1_lambda1",
+        "runtime": "python3.8",
+        "s3_bucket": "bucketparcial1",
+        "events": [{
+           "function": "codigoLambda1.descargahtml",
+           "expression": "cron(00 16 * * ? *)"
+       }]
+    },
+   
+    "dev2": {
+        "app_function": "codigoLambda1.descargacsv",
+        "keep_warm": false,
+        "role_name": "LabRole",
+        "manage_roles": false,
+        "apigateway_enabled": false,
+        "aws_region": "us-east-1",
+        "project_name": "parcial1_lambda2",
+        "runtime": "python3.8",
+        "s3_bucket": "bucketparcial1",
+        "events": [{
+            "function": "codigoLambda1.descargacsv",
+            "event_source": {
+                  "arn":  "arn:aws:s3:::bucketparcial1",
+                  "events": [
+                    "s3:ObjectCreated:*"
+                  ]
+               }
+            }]
+    }
+   
+}
