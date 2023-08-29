@@ -1,8 +1,8 @@
 import boto3
 from bs4 import BeautifulSoup
-import csv
+#import csv
 from datetime import datetime
-import io
+#import io
 
 
 def descargacsv():
@@ -39,9 +39,15 @@ def descargacsv():
         title = article.find('a').text.replace(",", "")
         csv_elespectador += f"{category}, {title}, {link}\n"
 
-    # Generar la ruta del archivo CSV y subirlo a S3
-    csv_tiempo_key = f'bucket/headlines/final/periodico=eltiempo/year={fecha[:4]}/month={fecha[5:7]}/day={fecha[8:]}/eltiempo.csv'
-    csv_elespectador_key = f'bucket/headlines/final/periodico=elespectador/year={fecha[:4]}/month={fecha[5:7]}/day={fecha[8:]}/publimetro.csv'
+   # Generar la ruta del archivo CSV y subirlo a S3
+    csv_tiempo_key = (
+        f'bucket/headlines/final/periodico=eltiempo/year={fecha[:4]}/'
+        f'month={fecha[5:7]}/day={fecha[8:]}/eltiempo.csv'
+    )
+    csv_elespectador_key = (
+        f'bucket/headlines/final/periodico=elespectador/year={fecha[:4]}/'
+        f'month={fecha[5:7]}/day={fecha[8:]}/publimetro.csv'
+    )
 
     s3_client = boto3.client('s3')
     s3_client.put_object(Body=csv_tiempo.encode('utf-8'), Bucket=bucket, Key=csv_tiempo_key)
