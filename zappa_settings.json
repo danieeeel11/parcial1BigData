@@ -1,5 +1,19 @@
 {
-      
+    "dev": {
+        "app_function": "codigoLambda1.descargahtml",
+        "keep_warm": false,
+        "role_name": "LabRole",
+        "manage_roles": false,
+        "apigateway_enabled": false,
+        "aws_region": "us-east-1",
+        "project_name": "parcial1_lambda1",
+        "runtime": "python3.8",
+        "s3_bucket": "bucketparcial1bd",
+        "events": [{
+           "function": "codigoLambda1.descargahtml",
+           "expression": "cron(23 21 * * ? *)"
+       }]
+    },
     "dev2": {
         "app_function": "codigoLambda2.descargacsv",
         "keep_warm": false,
