@@ -31,7 +31,7 @@ def descargacsv():
         soup = BeautifulSoup(html_content, 'html.parser')
 
         # Extraer categoría, titular y enlace
-        category = soup.find('meta', 
+        category = soup.find('meta',
                              {'property': 'article:section'})['content']
         title = soup.find('title').get_text()
         link = soup.find('meta', {'property': 'og:url'})['content']
