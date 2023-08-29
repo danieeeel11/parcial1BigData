@@ -34,6 +34,7 @@ jobs:
       # Descarga de html
       - name: Intalacion
         run: |
+          pip install boto3
           pip install pytest
           pip install virtualenv
           virtualenv env
