@@ -31,17 +31,12 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1      
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      # Descarga de html
+      - name: Intalacion
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-      - name: check dir
-        run: ls
-
-      #- name: guardar archivo py en S3
-      #  run: aws s3 cp test_sample.py s3://bucketparcial1/
+          pip install pytest
+          pip install virtualenv
+          virtualenv env
+          source env/bin/activate
+          pip install -r requirements.txt
+          pytest test_python.py
