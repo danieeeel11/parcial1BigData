@@ -28,7 +28,7 @@ def descargacsv():
     csv_tiempo = "Categoría, Titular, Enlace\n"
     for article in data_noticias_tiempo:
         link = "https://eltiempo.com" + article.find('a',
-                                                     class_='title page-link')['href']
+                    class_='title page-link')['href']
         category = article['data-seccion']
         title = article['data-name'].replace(",", "")
         csv_tiempo += f"{category}, {title}, {link}\n"
