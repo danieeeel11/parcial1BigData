@@ -18,7 +18,7 @@ def descargahtml():
         # Definir la ruta en S3
         s3_path = f"news/raw/{newspaper}-{current_date}.html"
         # Subir contenido a S3
-        s3_client.put_object(Bucket="bucketparcial1bd1",
+        s3_client.put_object(Bucket="bucketparcial1",
                              Key=s3_path,
                              Body=content)
         print(f"Contenido de {newspaper} guardado en S3: {s3_path}")
