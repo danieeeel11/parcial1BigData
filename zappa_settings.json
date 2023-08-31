@@ -10,8 +10,7 @@
         "runtime": "python3.8",
         "s3_bucket": "bucketparcial1",
         "events": [{
-           "function": "codigoLambda1.descargahtml",
-           "expression": "cron(0/5 * ? * MON-FRI *)"
+           "function": "codigoLambda1.descargahtml"
        }]
     },
     "dev2": {
